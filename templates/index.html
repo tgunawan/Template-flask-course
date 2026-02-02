@@ -1,0 +1,121 @@
+﻿{% set page_title = "NovaLearn — Single Page Demo" %}
+{% include "partials/header.html" %}
+
+<section id="landing" class="hero">
+  <div>
+    <h1>Learn faster with a studio built for momentum.</h1>
+    <p>NovaLearn is a single-page experience that blends landing, login, main dashboard, and course pages into one smooth scroll. Perfect for demos and prototypes.</p>
+    <a class="cta" href="#courses">Explore courses</a>
+  </div>
+  <div class="hero-card">
+    <h3>What you get</h3>
+    <p>Personal learning tracks, weekly goals, mentor check-ins, and verified certificates.</p>
+    <div class="grid">
+      <div class="card">
+        <strong>32K+</strong><br/>Active learners
+      </div>
+      <div class="card">
+        <strong>120</strong><br/>Expert mentors
+      </div>
+      <div class="card">
+        <strong>96%</strong><br/>Completion rate
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="auth">
+  <div class="section-title">Login / Signup</div>
+  <div class="section-sub">This section uses Firebase Auth for real email/password login.</div>
+  <div class="auth">
+    <div class="card">
+      <h3>Login</h3>
+      <form id="login-form" method="post" action="/login">
+        <label>Email
+          <input type="email" name="email" required />
+        </label>
+        <label>Password
+          <input type="password" name="password" required />
+        </label>
+        <button type="submit">Sign in</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Signup</h3>
+      <form id="signup-form" method="post" action="/signup">
+        <label>Full name
+          <input type="text" name="name" required />
+        </label>
+        <label>Email
+          <input type="email" name="email" required />
+        </label>
+        <label>Password
+          <input type="password" name="password" required />
+        </label>
+        <button type="submit">Create account</button>
+      </form>
+    </div>
+  </div>
+  <div class="auth-status" id="auth-status">
+    <span id="auth-status-text">
+      {% if firebase_web_ready %}
+        Firebase Auth ready.
+      {% else %}
+        Firebase Auth not configured. Set the web config env vars to enable.
+      {% endif %}
+    </span>
+    {% if firebase_web_ready %}
+      <button class="logout" id="logout-btn" type="button">Log out</button>
+    {% endif %}
+  </div>
+</section>
+
+<section id="dashboard">
+  <div class="section-title">Main Page</div>
+  <div class="section-sub">Quick snapshot of your learning journey.</div>
+  <div class="grid">
+    <div class="card">
+      <h4>Weekly goals</h4>
+      <p>Complete 3 lessons, submit 1 project, attend 1 mentor session.</p>
+    </div>
+    <div class="card">
+      <h4>Recommended track</h4>
+      <p>Full-Stack Launchpad — 8 week cohort starting March 10.</p>
+    </div>
+    <div class="card">
+      <h4>Progress</h4>
+      <p>12/30 lessons completed · 40% overall</p>
+    </div>
+  </div>
+</section>
+
+<section id="courses">
+  <div class="section-title">Course Page</div>
+  <div class="section-sub">Each course below is rendered from dummy data (or Firebase if connected).</div>
+  <div class="grid">
+    {% for course in courses %}
+    <div class="card">
+      <span class="tag">{{ course.category }}</span>
+      <h3>{{ course.title }}</h3>
+      <p>{{ course.summary }}</p>
+      <p><strong>Instructor:</strong> {{ course.instructor }}</p>
+      <p><strong>Level:</strong> {{ course.level }} · <strong>Duration:</strong> {{ course.duration }}</p>
+      <p><strong>Lessons:</strong> {{ course.lessons }} · <strong>Projects:</strong> {{ course.projects }}</p>
+      <p><strong>Rating:</strong> {{ course.rating }} · <span class="price">{{ course.price }}</span></p>
+      <a class="text-link" href="/courses/{{ course.id }}">View details</a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<footer>
+  Firestore: {{ 'connected' if firebase_ready else 'not configured (using dummy data)' }}
+</footer>
+
+<script>
+  window.__FIREBASE_CONFIG__ = {{ firebase_web_config | tojson }};
+  window.__FIREBASE_READY__ = {{ 'true' if firebase_web_ready else 'false' }};
+</script>
+<script type="module" src="{{ url_for('static', filename='app.js') }}"></script>
+
+{% include "partials/footer.html" %}

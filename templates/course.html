@@ -1,0 +1,49 @@
+﻿{% set page_title = "Course Details" %}
+{% include "partials/header.html" %}
+
+<section class="course-detail">
+  {% if course %}
+    <div class="course-hero">
+      <span class="tag">{{ course.category }}</span>
+      <h1>{{ course.title }}</h1>
+      <p class="lead">{{ course.summary }}</p>
+      <div class="meta">
+        <div><strong>Instructor:</strong> {{ course.instructor }}</div>
+        <div><strong>Level:</strong> {{ course.level }}</div>
+        <div><strong>Duration:</strong> {{ course.duration }}</div>
+        <div><strong>Lessons:</strong> {{ course.lessons }}</div>
+        <div><strong>Projects:</strong> {{ course.projects }}</div>
+        <div><strong>Rating:</strong> {{ course.rating }}</div>
+        <div><strong>Price:</strong> {{ course.price }}</div>
+      </div>
+      <a class="cta" href="/#courses">Back to courses</a>
+    </div>
+
+    <div class="grid two-col">
+      <div class="card">
+        <h3>Course outline</h3>
+        <ul class="course-outline">
+          {% for item in course.outline %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Outcomes</h3>
+        <ul class="course-outline">
+          {% for item in course.outcomes %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% else %}
+    <div class="card">
+      <h2>Course not found</h2>
+      <p>We couldn't find that course. Please return to the catalog.</p>
+      <a class="cta" href="/">Go home</a>
+    </div>
+  {% endif %}
+</section>
+
+{% include "partials/footer.html" %}
